@@ -14,9 +14,7 @@ $(document).ready(function() {
 
     // ------- Datepicker  js --------//  
 
-      $( function() {
-        $( ".date-picker" ).datepicker();
-      } );
+  
 
 
     //------- Niceselect  js --------//  

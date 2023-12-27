@@ -16,26 +16,25 @@
                 </div>
                 <div class="col-lg-4 col-md-6 banner-right">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link active" id="flight-tab" data-toggle="tab" href="#flight" role="tab"
                                 aria-controls="flight" aria-selected="true">Flights</a>
-                        </li>
+                        </li> --}}
                         <li class="nav-item">
-                            <a class="nav-link" id="hotel-tab" data-toggle="tab" href="#hotel" role="tab"
-                                aria-controls="hotel" aria-selected="false">Hotels</a>
+                            <a class="nav-link active" id="hotel-tab" data-toggle="tab" href="#hotel" role="tab"
+                                aria-controls="hotel" aria-selected="false">villas</a>
                         </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a class="nav-link" id="holiday-tab" data-toggle="tab" href="#holiday" role="tab"
                                 aria-controls="holiday" aria-selected="false">Holidays</a>
-                        </li>
+                        </li> --}}
                     </ul>
                     <div class="tab-content" id="myTabContent">
-                        <div class="tab-pane fade show active" id="flight" role="tabpanel" aria-labelledby="flight-tab">
+                        {{-- <div class="tab-pane fade show active" id="flight" role="tabpanel" aria-labelledby="flight-tab">
                             <form class="form-wrap">
-                                <input type="text" class="form-control" id="search-input" name="travel_to" placeholder="To "
-                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'To '">
-                                    <div id="results-container" style="display: none; background-color:white"></div>
-                                <input type="text" class="form-control date-picker" name="start" placeholder="Start "
+                                <input type="text" class="form-control" id="search-input" name="travel_to"
+                                    placeholder="To " onfocus="this.placeholder = ''" onblur="this.placeholder = 'To '">
+                                <input type="text" class="form-control date-picker" id="checkin_date" name="start" placeholder="Start "
                                     onfocus="this.placeholder = ''" onblur="this.placeholder = 'Start '">
                                 <input type="text" class="form-control date-picker" name="return" placeholder="Return "
                                     onfocus="this.placeholder = ''" onblur="this.placeholder = 'Return '">
@@ -47,29 +46,25 @@
                                     onblur="this.placeholder = 'Child '">
                                 <a href="#" class="primary-btn text-uppercase">Search villa</a>
                             </form>
+                        </div> --}}
+                        <div class="tab-pane fade show active" id="hotel" role="tabpanel" aria-labelledby="hotel-tab">
+                            <form class="form-wrap" action="{{ url('/search') }}" method="POST">
+                                @csrf
+                                <input type="text" class="form-control" name="travel_to" id="search-input" placeholder="where to.. "
+                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'From '">
+                                <div id="results-container" style="display: none; background-color:white"></div>
+                            <input type="text" class="form-control date-picker" name="start_date" placeholder="Start "
+                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Start '">
+                            <input type="text" class="form-control date-picker" name="end_date" placeholder="Return "
+                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Return '">
+                            <input type="number" min="1" max="20" class="form-control" name="guest"
+                                placeholder="Guests " onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Adults '">
+                         
+                            <button type="submit" class="primary-btn text-uppercase">Search </button>
+                        </form>
                         </div>
-                        <div class="tab-pane fade" id="hotel" role="tabpanel" aria-labelledby="hotel-tab">
-                            <form class="form-wrap">
-                                <input type="text" class="form-control" name="name" placeholder="From "
-                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'From '">
-                                <input type="text" class="form-control" name="to" placeholder="To "
-                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'To '">
-                                <input type="text" class="form-control date-picker" name="start"
-                                    placeholder="Start " onfocus="this.placeholder = ''"
-                                    onblur="this.placeholder = 'Start '">
-                                <input type="text" class="form-control date-picker" name="return"
-                                    placeholder="Return " onfocus="this.placeholder = ''"
-                                    onblur="this.placeholder = 'Return '">
-                                <input type="number" min="1" max="20" class="form-control" name="adults"
-                                    placeholder="Adults " onfocus="this.placeholder = ''"
-                                    onblur="this.placeholder = 'Adults '">
-                                <input type="number" min="1" max="20" class="form-control" name="child"
-                                    placeholder="Child " onfocus="this.placeholder = ''"
-                                    onblur="this.placeholder = 'Child '">
-                                <a href="#" class="primary-btn text-uppercase">Search Hotels</a>
-                            </form>
-                        </div>
-                        <div class="tab-pane fade" id="holiday" role="tabpanel" aria-labelledby="holiday-tab">
+                        {{-- <div class="tab-pane fade" id="holiday" role="tabpanel" aria-labelledby="holiday-tab">
                             <form class="form-wrap">
                                 <input type="text" class="form-control" name="name" placeholder="From "
                                     onfocus="this.placeholder = ''" onblur="this.placeholder = 'From '">
@@ -89,7 +84,7 @@
                                     onblur="this.placeholder = 'Child '">
                                 <a href="#" class="primary-btn text-uppercase">Search Holidays</a>
                             </form>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
@@ -668,47 +663,61 @@
         </div>
     </section>
     <!-- End recent-blog Area -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
 
     <script>
-      $(document).ready(function () {
-        $('#search-input').on('input', function () {
-          const query = $(this).val();
-    
-          $.ajax({
-            url: '/autocomplete',
-            method: 'GET',
-            data: { query: query },
-            success: function (data) {
-              // Handle the data and update the UI
-              displayResults(data);
-            },
-            error: function (error) {
-              console.error('Error:', error);
+        $(document).ready(function() {
+            $('#search-input').on('input', function() {
+                const query = $(this).val();
+
+                $.ajax({
+                    url: '/autocomplete',
+                    method: 'GET',
+                    data: {
+                        query: query
+                    },
+                    success: function(data) {
+                        // Handle the data and update the UI
+                        displayResults(data);
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+
+            function displayResults(results) {
+                // Clear previous results
+                $('#results-container').empty();
+
+                // Display new results
+                results.forEach(result => {
+                    const resultElement = $('<div class="result-item">' + result.city + ',' + result.state +
+                        '</div>');
+                    resultElement.css('cursor', 'pointer');
+                    resultElement.click(function() {
+                        // Combine city, state, and country when setting the input value
+                        const selectedValue = result.city + ', ' + result.state + ', ' + result
+                            .country;
+                        $('#search-input').val(selectedValue);
+                        $('#results-container')
+                            .hide(); // Hide the results container after selection
+                    });
+
+                    $('#results-container').append(resultElement);
+                });
+
+                $('#results-container').show();
             }
-          });
         });
-    
-        function displayResults(results) {
-      // Clear previous results
-      $('#results-container').empty();
+    </script>
 
-      // Display new results
-      results.forEach(result => {
-        const resultElement = $('<div class="result-item">' + result.city +',' +result.state + '</div>');
-        resultElement.css('cursor', 'pointer');
-        resultElement.click(function () {
-            // Combine city, state, and country when setting the input value
-            const selectedValue = result.city + ', ' + result.state + ', ' + result.country;
-            $('#search-input').val(selectedValue);
-            $('#results-container').hide(); // Hide the results container after selection
-          });
 
-        $('#results-container').append(resultElement);
-      });
+    <script>
+        $( function() {
+        $( ".date-picker" ).datepicker({minDate: 0 ,});
+        
+      } );
 
-      $('#results-container').show();
-    }
-      });
     </script>
 @endsection

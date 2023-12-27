@@ -27,4 +27,9 @@ class Villas extends Model
             $model->unsearchable();
         });
     }
+
+    public function bookings()
+{
+    return $this->hasMany(BookedVilla::class,'villa_id','id');
+}
 }

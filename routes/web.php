@@ -51,3 +51,4 @@ Route::get('/admin-dashboard',[AdminDashboardController::class,'index']);
 Route::get('/admin-dashboard/add-villa',[villasController::class,'AddVillaPage']);
 Route::post('/store-villa',[villasController::class,'storevilla']);
 Route::get('/admin-dashboard/all-villas',[villasController::class,'Allvillas']);
+// Route::get('/get-booked-dates')

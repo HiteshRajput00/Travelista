@@ -86,16 +86,15 @@
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="checkinDate" class="form-label">Check-in Date</label>
+                                    <label for="checkin" class="form-label">Check-in Date</label>
                                     <input type="text" class="form-control date-picker" name="start"
-                                        placeholder="Start " onfocus="this.placeholder = ''"
+                                        placeholder="Start " id="checkin" onfocus="this.placeholder = ''"
                                         onblur="this.placeholder = 'Start '">
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="checkoutDate" class="form-label">Check-out Date</label>
-                                    <input type="text" class="form-control date-picker" name="start"
-                                        placeholder="Start " onfocus="this.placeholder = ''"
-                                        onblur="this.placeholder = 'Start '">
+                                    <label for="checkout" class="form-label">Check-out Date</label>
+                                    <input type="text" class="form-control date-picker" name="end" placeholder="end"
+                                        id="checkout" onfocus="this.placeholder = ''" onblur="this.placeholder = 'end '">
                                 </div>
                             </div>
 
@@ -113,5 +112,80 @@
             </div>
         </div>
     </section>
+
+
     <!-- End insurence-one Area -->
+
+    <script>
+        var villaBookings = @json($bookings);
+        $(function() {
+            $(".date-picker").datepicker({
+                dateFormat: 'yy-mm-dd',
+                minDate: 0,
+                beforeShowDay: function(date) {
+                    var isBooked = villaBookings.some(function(booking) {
+                        var checkinDate = new Date(booking.checkin_date);
+                        var checkoutDate = new Date(booking.checkout_date);
+                        return date >= checkinDate && date <= checkoutDate;
+                    });
+
+                    // Disable checkin and checkout dates
+                    var currentDate = $.datepicker.formatDate('yy-mm-dd', date);
+                    var isCheckinCheckoutDate = villaBookings.some(function(booking) {
+                        return currentDate === booking.checkin_date || currentDate === booking
+                            .checkout_date;
+                    });
+
+                    return [!isBooked && !isCheckinCheckoutDate];
+                }
+            });
+        });
+    </script>
+    <script>
+        // $(document).ready(function() {
+        //     $("#checkin, #checkout").change(function() {
+        //         var selectedDate = $(this).val();
+        //         console.log("Selected Date:", selectedDate);
+
+        //         if ($(this).attr("id") === 'checkin') {
+        //             $("#checkout").datepicker("option", "minDate", selectedDate);
+        //         }
+        //     });
+        // });
+
+        var bookedDates = @json($bookings);
+
+        $(document).ready(function() {
+            $("#checkin, #checkout").change(function() {
+                var selectedDate = $(this).val();
+                console.log("Selected Date:", selectedDate);
+
+                if ($(this).attr("id") === 'checkin') {
+                    // Disable dates in the checkout datepicker before the selected check-in date
+                    $("#checkout").datepicker("option", "minDate", selectedDate);
+
+                    // Find the next booking that starts on or after the selected check-in date
+                    var nextBooking = bookedDates.find(function(booking) {
+                        return new Date(booking.checkin_date) >= new Date(selectedDate);
+                    });
+
+                    if (nextBooking) {
+                        // Disable dates in the checkout datepicker after the start date of the next booking
+                        var maxDate = new Date(nextBooking.checkin_date);
+                maxDate.setDate(maxDate.getDate() - 1);
+                        $("#checkout").datepicker("option", "maxDate", new Date(maxDate));
+                    } else {
+                        // If no next booking, reset the maxDate option
+                        $("#checkout").datepicker("option", "maxDate", null);
+                    }
+
+                    // Disable the selected check-in date and next date in the checkout datepicker
+                    $("#checkout").datepicker("option", "beforeShowDay", function(date) {
+                        var currentDate = $.datepicker.formatDate('yy-mm-dd', date);
+                        return [currentDate > selectedDate];
+                    });
+                }
+            });
+        });
+    </script>
 @endsection

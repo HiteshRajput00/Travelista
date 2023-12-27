@@ -17,6 +17,12 @@
     <!-- Site Title -->
     <title>Travel</title>
 
+    <!-- Include jQuery -->
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+<!-- Include jQuery UI -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
     <!--
    CSS
@@ -30,6 +36,19 @@
     <link rel="stylesheet" href="{{url('/travelista/css/animate.min.css')}}">
     <link rel="stylesheet" href="{{url('/travelista/css/owl.carousel.css')}}">
     <link rel="stylesheet" href="{{url('/travelista/css/main.css')}}">
+
+    <!-- Include Bootstrap CSS and JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <!-- Include Bootstrap Datepicker CSS and JS -->
+    <link rel="stylesheet" href="{{ asset('node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
+    <script src="{{ asset('node_modules/moment/min/moment.min.js') }}"></script>
+    <script src="{{ asset('node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+   
 </head>
 
 <body>

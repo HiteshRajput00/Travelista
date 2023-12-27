@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\travelista;
 
 use App\Http\Controllers\Controller;
+use App\Models\BookedVilla;
 use App\Models\Villas;
 use Illuminate\Http\Request;
 
@@ -57,6 +58,7 @@ class DashboardController extends Controller
     Public function villaDetails($id)
     {
         $villa = Villas::find($id);
-        return view('travelista.villas.details',compact('villa'));
+        $bookings = $villa->bookings()->get(['checkin_date', 'checkout_date']);
+        return view('travelista.villas.details',compact('villa','bookings'));
     }
 }
