@@ -1,5 +1,11 @@
 @extends('travelista-layout.master')
 @section('content')
+    <style>
+        #map {
+            height: 300px;
+            width: 50%;
+        }
+    </style>
     <!-- start banner Area -->
     <section class="about-banner relative">
         <div class="overlay overlay-bg"></div>
@@ -62,7 +68,7 @@
 
                                 <li class="d-flex justify-content-between align-items-center">
                                     <span>Price per night</span>
-                                    <a href="#" class="price-btn">{{ $villa->price }}</a>
+                                    <p>{{ $villa->price }}</p>
                                 </li>
                             </ul>
                         </div>
@@ -72,7 +78,8 @@
                     <div class="container p-lg-3">
                         <h2 class="mb-4">Book a Villa</h2>
 
-                        <form>
+                        <form action="{{ url('/book-villa') }}" method="post">
+                            @csrf
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="guestName" class="form-label">Guest Name</label>
@@ -100,8 +107,23 @@
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="numOfGuests" class="form-label">Number of Guests</label>
-                                    <input type="number" class="form-control" id="numOfGuests" name="numOfGuests" required>
+                                    <div id="result"></div>
+                                    <label for="totaldays" class="form-label">Number of days</label>
+                                    <input type="text" class="form-control" id="total_days" name="totaldays" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="price" class="form-label">total price</label>
+                                    <input type="text" class="form-control" id="total_price" name="price" readonly>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="numOfGuests" class="form-label">Number of Guest</label>
+                                    <select class="form-control" name="numOfGuests" id="numOfGuests">
+                                        @for ($i = 2; $i <= $villa->guest_capacity; $i += 2)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
                                 </div>
                             </div>
 
@@ -109,13 +131,14 @@
                         </form>
                     </div>
                 </div>
+                <div id="map"></div>
+
             </div>
         </div>
     </section>
 
-
-    <!-- End insurence-one Area -->
-
+    <!-- prettier-ignore -->
+      
     <script>
         var villaBookings = @json($bookings);
         $(function() {
@@ -129,7 +152,6 @@
                         return date >= checkinDate && date <= checkoutDate;
                     });
 
-                    // Disable checkin and checkout dates
                     var currentDate = $.datepicker.formatDate('yy-mm-dd', date);
                     var isCheckinCheckoutDate = villaBookings.some(function(booking) {
                         return currentDate === booking.checkin_date || currentDate === booking
@@ -142,17 +164,24 @@
         });
     </script>
     <script>
-        // $(document).ready(function() {
-        //     $("#checkin, #checkout").change(function() {
-        //         var selectedDate = $(this).val();
-        //         console.log("Selected Date:", selectedDate);
+        $(document).ready(function() {
+            $('#checkout').on('change', function() {
+                var checkinDate = $('#checkin').datepicker('getDate');
+                var checkoutDate = $('#checkout').datepicker('getDate');
 
-        //         if ($(this).attr("id") === 'checkin') {
-        //             $("#checkout").datepicker("option", "minDate", selectedDate);
-        //         }
-        //     });
-        // });
+                if (checkinDate && checkoutDate) {
+                    var totalDays = Math.floor((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
+                    var pricePerDay = {{ $villa->price }};
 
+                    var totalPrice = totalDays * pricePerDay;
+
+                    $('#total_days').val(totalDays);
+                    $('#total_price').val(totalPrice);
+                }
+            });
+        });
+    </script>
+    <script>
         var bookedDates = @json($bookings);
 
         $(document).ready(function() {
@@ -161,25 +190,20 @@
                 console.log("Selected Date:", selectedDate);
 
                 if ($(this).attr("id") === 'checkin') {
-                    // Disable dates in the checkout datepicker before the selected check-in date
                     $("#checkout").datepicker("option", "minDate", selectedDate);
 
-                    // Find the next booking that starts on or after the selected check-in date
                     var nextBooking = bookedDates.find(function(booking) {
                         return new Date(booking.checkin_date) >= new Date(selectedDate);
                     });
 
                     if (nextBooking) {
-                        // Disable dates in the checkout datepicker after the start date of the next booking
                         var maxDate = new Date(nextBooking.checkin_date);
-                maxDate.setDate(maxDate.getDate() - 1);
+                        maxDate.setDate(maxDate.getDate() - 1);
                         $("#checkout").datepicker("option", "maxDate", new Date(maxDate));
                     } else {
-                        // If no next booking, reset the maxDate option
                         $("#checkout").datepicker("option", "maxDate", null);
                     }
 
-                    // Disable the selected check-in date and next date in the checkout datepicker
                     $("#checkout").datepicker("option", "beforeShowDay", function(date) {
                         var currentDate = $.datepicker.formatDate('yy-mm-dd', date);
                         return [currentDate > selectedDate];
@@ -187,5 +211,26 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: parseFloat("{{ $villa->location->lat }}"),
+                    lng: parseFloat("{{ $villa->location->lang }}")
+                },
+                zoom: 8
+            });
+
+            var marker = new google.maps.Marker({
+                position: {
+                    lat: parseFloat("{{ $villa->location->lat }}"),
+                    lng: parseFloat("{{ $villa->location->lang }}")
+                },
+                map: map,
+                title: 'Hello World!'
+            });
+        }
     </script>
 @endsection

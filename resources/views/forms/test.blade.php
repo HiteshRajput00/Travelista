@@ -24,12 +24,13 @@
 
     <!-- Include jQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqq7SVAxuvru2xwOaMqmCnF0HE-HS7x88&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqq7SVAxuvru2xwOaMqmCnF0HE-HS7x88&callback=initMap" async
+        defer></script>
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
     <!--
    CSS
    ============================================= -->
-   
+
     <link rel="stylesheet" href="{{ url('/travelista/css/linearicons.css') }}">
     <link rel="stylesheet" href="{{ url('/travelista/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ url('/travelista/css/bootstrap.css') }}">
@@ -122,7 +123,19 @@
         </div>
     </header><!-- #header -->
 
-    @yield('content')
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="checkin" class="form-label">Check-in Date</label>
+            <input type="text" class="form-control date-picker" name="start" placeholder="Start " id="checkin"
+                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Start '">
+        </div>
+        <div class="col-md-6">
+            <label for="checkout" class="form-label">Check-out Date</label>
+            <input type="text" class="form-control date-picker" name="end" placeholder="end" id="checkout"
+                onfocus="this.placeholder = ''" onblur="this.placeholder = 'end '">
+        </div>
+    </div>
+
 
     <!-- start footer Area -->
     <footer class="footer-area section-gap">
@@ -224,7 +237,7 @@
     <script src="{{ url('/travelista/js/vendor/jquery-2.2.4.min.js') }}"></script>
     <script src="{{ url('/travelista/js/popper.min.js') }}"></script>
     <script src="{{ url('/travelista/js/vendor/bootstrap.min.js') }}"></script>
-    
+
 
     {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFtycsKBJub_o-quAm-Ws9ytlpAwJdH9w"></script> --}}
     <script src="{{ url('/travelista/js/jquery-ui.js') }}"></script>

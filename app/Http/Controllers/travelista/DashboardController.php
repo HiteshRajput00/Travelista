@@ -55,8 +55,9 @@ class DashboardController extends Controller
         return view('travelista.villas.index',compact('villa_list'));
     }
 
-    Public function villaDetails($id)
+    Public function villaDetails(Request $request)
     {
+        $id = $request->input('villa_id');
         $villa = Villas::find($id);
         $bookings = $villa->bookings()->get(['checkin_date', 'checkout_date']);
         return view('travelista.villas.details',compact('villa','bookings'));

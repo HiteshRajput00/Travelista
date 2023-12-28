@@ -53,10 +53,6 @@
                         <a href="" class="btn btn-light btn-floating mx-1">
                             <i class="fa fa-google"></i>
                         </a>
-
-                        {{-- <button type="button" class="btn btn-light btn-floating mx-1">
-                        <div class="g-signin2" data-onsuccess="onSignIn"></div>
-                    </button> --}}
                     </div>
 
                     <div class="divider d-flex align-items-center my-4">

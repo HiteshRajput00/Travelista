@@ -254,9 +254,8 @@ $(document).ready(function() {
     //------- Google Map  js --------//  
 
     if (document.getElementById("map")) {
-        google.maps.event.addDomListener(window, 'load', init);
-
-        function init() {
+        window.addEventListener('load', initMap);
+        function initMap() {
             var mapOptions = {
                 zoom: 11,
                 center: new google.maps.LatLng(40.6700, -73.9400), // New York

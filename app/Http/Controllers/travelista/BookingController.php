@@ -15,11 +15,13 @@ class BookingController extends Controller
 {
     public function bookvilla(Request $request)
     {
-        $request->validate(['email'=>'required|unique:users']);
+        dd($request->all());
+        $request->validate(['email'=>'required|email']);
         // dd($request->all());
         if (Auth::user()) {
             $user = User::find($request->user_id);
         } else {
+            $request->validate(['email'=>'required|email|unique:users']);
             $user = new User();
             $user->name = $request->guestName;
             $user->email = $request->email;

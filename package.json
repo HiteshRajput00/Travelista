@@ -11,7 +11,9 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "daterangepicker": "^3.1.0",
         "eonasdan-bootstrap-datetimepicker": "^4.17.49",
+        "flatpickr": "^4.6.13",
         "moment": "^2.30.0"
     }
 }
