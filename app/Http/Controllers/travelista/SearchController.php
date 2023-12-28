@@ -24,6 +24,11 @@ class SearchController extends Controller
 
     public function search(Request $req)
     {
+        $req->validate([
+          'travel_to' => 'required',
+          'guest' => 'required',
+          'location' => 'required'
+        ]);
         $location = explode(', ', $req->travel_to);
         $guest = $req->guest;
         list($city, $state, $country) = $location;

@@ -62,4 +62,9 @@ class DashboardController extends Controller
         $bookings = $villa->bookings()->get(['checkin_date', 'checkout_date']);
         return view('travelista.villas.details',compact('villa','bookings'));
     }
+
+    Public function test()
+    {
+        return view('forms.test');
+    }
 }

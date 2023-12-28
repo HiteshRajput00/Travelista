@@ -94,8 +94,8 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="checkin" class="form-label">Check-in Date</label>
-                                    <input type="text" class="form-control date-picker" name="start"
-                                        placeholder="Start " id="checkin" onfocus="this.placeholder = ''"
+                                    <input type="text" id="dateRange" class="form-control date-picker" name="start"
+                                        placeholder="Start " onfocus="this.placeholder = ''"
                                         onblur="this.placeholder = 'Start '">
                                 </div>
                                 <div class="col-md-6">
@@ -137,100 +137,43 @@
         </div>
     </section>
 
-    <!-- prettier-ignore -->
-      
     <script>
-        var villaBookings = @json($bookings);
-        $(function() {
-            $(".date-picker").datepicker({
-                dateFormat: 'yy-mm-dd',
-                minDate: 0,
-                beforeShowDay: function(date) {
-                    var isBooked = villaBookings.some(function(booking) {
+        document.addEventListener('DOMContentLoaded', function() {
+            var bookedDates = JSON.parse('{!! json_encode($bookings) !!}'); // Parse the JSON string into an array
+            console.log("Booked Dates:", bookedDates);
+            flatpickr('#dateRange', {
+                mode: 'range',
+                altInput: true,
+                minDate: 'today',
+                disable: [function(date) {
+                    var isBooked = bookedDates.some(function(booking) {
                         var checkinDate = new Date(booking.checkin_date);
                         var checkoutDate = new Date(booking.checkout_date);
                         return date >= checkinDate && date <= checkoutDate;
                     });
 
-                    var currentDate = $.datepicker.formatDate('yy-mm-dd', date);
-                    var isCheckinCheckoutDate = villaBookings.some(function(booking) {
-                        return currentDate === booking.checkin_date || currentDate === booking
+                    // Format the currentDate as yyyy-mm-dd
+                    var currentDate = date.toISOString().split('T')[0];
+
+                    var isCheckinCheckoutDate = bookedDates.some(function(booking) {
+                        return currentDate === booking.checkin_date || currentDate ===
+                            booking
                             .checkout_date;
                     });
 
-                    return [!isBooked && !isCheckinCheckoutDate];
-                }
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#checkout').on('change', function() {
-                var checkinDate = $('#checkin').datepicker('getDate');
-                var checkoutDate = $('#checkout').datepicker('getDate');
+                    return isBooked || isCheckinCheckoutDate;
+                }],
+                plugins: [new rangePlugin({
+                    input: '#dateRange'
+                })],
 
-                if (checkinDate && checkoutDate) {
-                    var totalDays = Math.floor((checkoutDate - checkinDate) / (1000 * 60 * 60 * 24));
-                    var pricePerDay = {{ $villa->price }};
-
-                    var totalPrice = totalDays * pricePerDay;
-
-                    $('#total_days').val(totalDays);
-                    $('#total_price').val(totalPrice);
-                }
-            });
-        });
-    </script>
-    <script>
-        var bookedDates = @json($bookings);
-
-        $(document).ready(function() {
-            $("#checkin, #checkout").change(function() {
-                var selectedDate = $(this).val();
-                console.log("Selected Date:", selectedDate);
-
-                if ($(this).attr("id") === 'checkin') {
-                    $("#checkout").datepicker("option", "minDate", selectedDate);
-
-                    var nextBooking = bookedDates.find(function(booking) {
-                        return new Date(booking.checkin_date) >= new Date(selectedDate);
-                    });
-
-                    if (nextBooking) {
-                        var maxDate = new Date(nextBooking.checkin_date);
-                        maxDate.setDate(maxDate.getDate() - 1);
-                        $("#checkout").datepicker("option", "maxDate", new Date(maxDate));
-                    } else {
-                        $("#checkout").datepicker("option", "maxDate", null);
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        document.getElementById('checkout').value = dateStr.split(" to ")[0];
                     }
-
-                    $("#checkout").datepicker("option", "beforeShowDay", function(date) {
-                        var currentDate = $.datepicker.formatDate('yy-mm-dd', date);
-                        return [currentDate > selectedDate];
-                    });
                 }
             });
         });
     </script>
-
-    <script>
-        function initMap() {
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: {
-                    lat: parseFloat("{{ $villa->location->lat }}"),
-                    lng: parseFloat("{{ $villa->location->lang }}")
-                },
-                zoom: 8
-            });
-
-            var marker = new google.maps.Marker({
-                position: {
-                    lat: parseFloat("{{ $villa->location->lat }}"),
-                    lng: parseFloat("{{ $villa->location->lang }}")
-                },
-                map: map,
-                title: 'Hello World!'
-            });
-        }
-    </script>
+   
 @endsection

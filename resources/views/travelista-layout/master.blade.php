@@ -24,12 +24,13 @@
 
     <!-- Include jQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqq7SVAxuvru2xwOaMqmCnF0HE-HS7x88&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqq7SVAxuvru2xwOaMqmCnF0HE-HS7x88&callback=initMap" async
+        defer></script>
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
     <!--
    CSS
    ============================================= -->
-   
+
     <link rel="stylesheet" href="{{ url('/travelista/css/linearicons.css') }}">
     <link rel="stylesheet" href="{{ url('/travelista/css/font-awesome.min.css') }}">
     <link rel="stylesheet" href="{{ url('/travelista/css/bootstrap.css') }}">
@@ -41,6 +42,15 @@
     <link rel="stylesheet" href="{{ url('/travelista/css/main.css') }}">
     <link rel="stylesheet" href="{{ url('/travelista/css/filter.css') }}">
 
+    <!-- flatepicker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
+
+
+    <link rel="stylesheet" href="{{ asset('/node_modules/flatpickr/dist/flatpickr.min.css') }}">
+    <script src="{{ asset('node_modules/flatpickr/dist/flatpickr.min.js') }}"></script>
     <!-- Include Bootstrap CSS and JS -->
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -117,10 +127,10 @@
                         </li> --}}
                         <li><a href="{{ url('/contact-us') }}">Contact</a></li>
                     </ul>
-                </nav><!-- #nav-menu-container -->
+                </nav>
             </div>
         </div>
-    </header><!-- #header -->
+    </header>
 
     @yield('content')
 
@@ -224,7 +234,7 @@
     <script src="{{ url('/travelista/js/vendor/jquery-2.2.4.min.js') }}"></script>
     <script src="{{ url('/travelista/js/popper.min.js') }}"></script>
     <script src="{{ url('/travelista/js/vendor/bootstrap.min.js') }}"></script>
-    
+
 
     {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFtycsKBJub_o-quAm-Ws9ytlpAwJdH9w"></script> --}}
     <script src="{{ url('/travelista/js/jquery-ui.js') }}"></script>

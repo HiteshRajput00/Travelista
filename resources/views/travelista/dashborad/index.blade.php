@@ -50,19 +50,21 @@
                         <div class="tab-pane fade show active" id="hotel" role="tabpanel" aria-labelledby="hotel-tab">
                             <form class="form-wrap" action="{{ url('/search') }}" method="POST">
                                 @csrf
-                                <input type="text" class="form-control" name="travel_to" id="search-input" placeholder="where to.. "
-                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'From '">
+                                <input type="text" class="form-control" name="travel_to" id="search-input"
+                                    placeholder="where to.. " onfocus="this.placeholder = ''"
+                                    onblur="this.placeholder = 'From '">
                                 <div id="results-container" style="display: none; background-color:white"></div>
-                            <input type="text" class="form-control date-picker" name="start_date" placeholder="Start "
-                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Start '">
-                            <input type="text" class="form-control date-picker" name="end_date" placeholder="Return "
-                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Return '">
-                            <input type="number" min="1" max="20" class="form-control" name="guest"
-                                placeholder="Guests " onfocus="this.placeholder = ''"
-                                onblur="this.placeholder = 'Adults '">
-                         
-                            <button type="submit" class="primary-btn text-uppercase">Search </button>
-                        </form>
+                                <input type="text" class="form-control date-picker" id="dateRange" name="start_date"
+                                    placeholder="Start " onfocus="this.placeholder = ''"
+                                    onblur="this.placeholder = 'Start '">
+                                <input type="text" class="form-control date-picker" name="end_date" id="checkout" placeholder="Return "
+                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Return '">
+                                <input type="number" min="1" max="20" class="form-control" name="guest"
+                                    placeholder="Guests " onfocus="this.placeholder = ''"
+                                    onblur="this.placeholder = 'Adults '">
+
+                                <button type="submit" class="primary-btn text-uppercase">Search </button>
+                            </form>
                         </div>
                         {{-- <div class="tab-pane fade" id="holiday" role="tabpanel" aria-labelledby="holiday-tab">
                             <form class="form-wrap">
@@ -712,12 +714,23 @@
         });
     </script>
 
-
     <script>
-        $( function() {
-        $( ".date-picker" ).datepicker({minDate: 0 ,});
-        
-      } );
+        document.addEventListener('DOMContentLoaded', function() {
 
+            flatpickr('#dateRange', {
+                mode: 'range',
+                altInput: true,
+                minDate: 'today',
+                plugins: [new rangePlugin({
+                    input: '#dateRange'
+                })],
+
+                onChange: function(selectedDates, dateStr, instance) {
+                    if (selectedDates.length === 2) {
+                        document.getElementById('checkout').value = dateStr.split(" to ")[0];
+                    }
+                }
+            });
+        });
     </script>
 @endsection

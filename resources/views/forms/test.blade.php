@@ -22,14 +22,16 @@
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
-    <!-- Include jQuery UI -->
+    {{-- <!-- Include jQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqq7SVAxuvru2xwOaMqmCnF0HE-HS7x88&callback=initMap" async
         defer></script>
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"> --}}
     <!--
    CSS
    ============================================= -->
+   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+   <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
 
     <link rel="stylesheet" href="{{ url('/travelista/css/linearicons.css') }}">
     <link rel="stylesheet" href="{{ url('/travelista/css/font-awesome.min.css') }}">
@@ -44,18 +46,27 @@
 
     <!-- Include Bootstrap CSS and JS -->
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> --}}
 
     <!-- Include Bootstrap Datepicker CSS and JS -->
-    <link rel="stylesheet"
+    {{-- <link rel="stylesheet"
         href="{{ asset('node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
     <script src="{{ asset('node_modules/moment/min/moment.min.js') }}"></script>
     <script src="{{ asset('node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}">
-    </script>
+    </script> --}}
+
+    <!-- Add these lines to include Flatpickr styles -->
+    <link rel="stylesheet" href="{{ asset('/node_modules/flatpickr/dist/flatpickr.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('/node_modules/flatpickr/dist/plugins/flatpickr-datepickr-range.css') }}"> --}}
+
+    <!-- Add these lines to include Flatpickr scripts -->
+    <script src="{{ asset('node_modules/flatpickr/dist/flatpickr.min.js') }}"></script>
+    {{-- <script src="{{ asset('node_modules/flatpickr/dist/plugins/flatpickr-datepickr-range.js') }}"></script> --}}
+
 
 </head>
 
@@ -122,20 +133,26 @@
             </div>
         </div>
     </header><!-- #header -->
-
-    <div class="row mb-3">
-        <div class="col-md-6">
-            <label for="checkin" class="form-label">Check-in Date</label>
-            <input type="text" class="form-control date-picker" name="start" placeholder="Start " id="checkin"
-                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Start '">
+    <section class="about-banner relative">
+        <div class="overlay overlay-bg"></div>
+        <div class="container">
+            <div class="row d-flex align-items-center justify-content-center">
+                <div class="about-content col-lg-12">
+                    <h1 class="text-white">
+                        Welcome Back
+                    </h1>
+                    <p class="text-white link-nav"><a href="{{ url('/') }}">Home </a> <span
+                            class="lnr lnr-arrow-right"></span> <a href="{{ url('/login') }}"> login</a></p>
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            <label for="checkout" class="form-label">Check-out Date</label>
-            <input type="text" class="form-control date-picker" name="end" placeholder="end" id="checkout"
-                onfocus="this.placeholder = ''" onblur="this.placeholder = 'end '">
+    </section>
+    <section>
+        <div class="row mb-3">
+            <input type="text" id="dateRange" placeholder="Start Date">
+            <input type="text" id="endDate" placeholder="End Date">
         </div>
-    </div>
-
+    </section>
 
     <!-- start footer Area -->
     <footer class="footer-area section-gap">
@@ -240,7 +257,7 @@
 
 
     {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFtycsKBJub_o-quAm-Ws9ytlpAwJdH9w"></script> --}}
-    <script src="{{ url('/travelista/js/jquery-ui.js') }}"></script>
+    {{-- <script src="{{ url('/travelista/js/jquery-ui.js') }}"></script>
     <script src="{{ url('/travelista/js/easing.min.js') }}"></script>
     <script src="{{ url('/travelista/js/hoverIntent.js') }}"></script>
     <script src="{{ url('/travelista/js/superfish.min.js') }}"></script>
@@ -249,7 +266,17 @@
     <script src="{{ url('/travelista/js/jquery.nice-select.min.js') }}"></script>
     <script src="{{ url('/travelista/js/owl.carousel.min.js') }}"></script>
     <script src="{{ url('/travelista/js/mail-script.js') }}"></script>
-    <script src="{{ url('/travelista/js/main.js') }}"></script>
+    <script src="{{ url('/travelista/js/main.js') }}"></script> --}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr('#dateRange', {
+                mode: 'range',
+                altInput: true,
+                plugins: [new rangePlugin({ input: '#dateRange' })]
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -57,3 +57,4 @@ Route::group(['middleware' => 'admin'], function () {
 Route::post('/book-villa', [BookingController::class, 'Bookvilla']);
 
 //::::::::::::::: testing datepicker ::::::::::::::::::::::://
+Route::get('/test',[DashboardController::class,'test']);
