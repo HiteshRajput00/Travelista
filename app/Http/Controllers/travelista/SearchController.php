@@ -27,7 +27,6 @@ class SearchController extends Controller
         $req->validate([
           'travel_to' => 'required',
           'guest' => 'required',
-          'location' => 'required'
         ]);
         $location = explode(', ', $req->travel_to);
         $guest = $req->guest;
