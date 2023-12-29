@@ -50,15 +50,16 @@
                         <div class="tab-pane fade show active" id="hotel" role="tabpanel" aria-labelledby="hotel-tab">
                             <form class="form-wrap" action="{{ url('/search') }}" method="POST">
                                 @csrf
-                                <input type="text" class="form-control" name="travel_to" id="search-input"
+                                <input type="text" class="form-control" name="travel_to" autocomplete="off" id="search-input"
                                     placeholder="where to.. " onfocus="this.placeholder = ''"
                                     onblur="this.placeholder = 'From '">
                                 <div id="results-container" style="display: none; background-color:white"></div>
                                 <input type="text" class="form-control date-picker" id="dateRange" name="start_date"
                                     placeholder="Start " onfocus="this.placeholder = ''"
                                     onblur="this.placeholder = 'Start '">
-                                <input type="text" class="form-control date-picker" name="end_date" id="checkout" placeholder="Return "
-                                    onfocus="this.placeholder = ''" onblur="this.placeholder = 'Return '">
+                                <input type="text" class="form-control date-picker" name="end_date" id="checkout"
+                                    placeholder="Return " onfocus="this.placeholder = ''"
+                                    onblur="this.placeholder = 'Return '">
                                 <input type="number" min="1" max="20" class="form-control" name="guest"
                                     placeholder="Guests " onfocus="this.placeholder = ''"
                                     onblur="this.placeholder = 'Adults '">
@@ -710,7 +711,14 @@
                 });
 
                 $('#results-container').show();
+
+                if ($('#search-input').val().trim() === '') {
+                    $('#results-container').hide();
+                } else {
+                    $('#results-container').show();
+                }
             }
+
         });
     </script>
 

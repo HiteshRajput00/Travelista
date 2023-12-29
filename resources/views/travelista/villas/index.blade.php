@@ -54,7 +54,7 @@
                     <article class="filter-group">
                         <div class="card-body">
                             <label class="form-group">Search Location</label>
-                            <input type="text" class="form-control" name="travel_to" id="search-input"
+                            <input type="text" autocomplete="off" class="form-control" name="travel_to" id="search-input"
                                 placeholder="where to.. " onfocus="this.placeholder = ''"
                                 onblur="this.placeholder = 'From '" value="">
                             <div id="results-container" style="display: none; background-color:white"></div>
@@ -340,7 +340,7 @@
 
         var villas = document.querySelectorAll('.villa-item');
         var firstVillaname = villas[0].getAttribute('data-villa-name');
-        // Store the coordinates of the first villa
+       
         var firstVillaLocation = [
             parseFloat(villas[0].getAttribute('data-lang')),
             parseFloat(villas[0].getAttribute('data-lat'))
@@ -349,10 +349,9 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
             center: firstVillaLocation,
-            zoom: 9 // Adjust the initial zoom level
+            zoom: 12 
         });
 
-        // Create a single marker for all villas
         var marker = new mapboxgl.Marker()
             .setLngLat(firstVillaLocation)
             .addTo(map);
@@ -382,22 +381,19 @@
             });
 
             villa.addEventListener('mouseenter', function() {
-                // Update the map's center and marker position
                 map.flyTo({
                     center: villaLocation,
-                    essential: true // animation is considered essential with a duration of 2000 ms
+                    essential: true 
                 });
 
                 marker.setLngLat(villaLocation);
 
-                // Display the villa name in a popup
                 popup.setLngLat(villaLocation)
                     .setHTML('<h5>' + villaName + '</h5>')
                     .addTo(map);
             });
 
             villa.addEventListener('mouseleave', function() {
-                // Reset the map location and remove the popup on mouse leave
                 map.flyTo({
                     center: lastHoveredVillaLocation,
                     essential: true
@@ -413,12 +409,10 @@
             var priceSlider = document.getElementById('price-slider');
             var priceDisplay = document.getElementById('price-values');
 
-            // Sample prices for villas (replace this with your actual data)
             var villaPrices = [
                 10000, 15000, 20000, 25000, 30000, 40000, 50000
             ];
 
-            // Calculate the min and max prices
             var minPrice = Math.min(...villaPrices);
             var maxPrice = Math.max(...villaPrices);
 
@@ -431,12 +425,9 @@
                 }
             });
 
-            // Example: Listen for changes in the price slider
             priceSlider.noUiSlider.on('update', function(values, handle) {
-                // Handle the updated values
                 console.log('Slider updated:', values);
 
-                // Display the selected price values
                 priceDisplay.innerText = '$' + values[0] + ' - $' + values[1];
             });
         });

@@ -24,19 +24,17 @@
 
     <!-- Include jQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqq7SVAxuvru2xwOaMqmCnF0HE-HS7x88&callback=initMap" async
-        defer></script> --}}
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
 
     <!-- Include noUiSlider CSS from CDN -->
-   <!-- Include noUiSlider CSS from CDN -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.css">
-<script src="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.js"></script>
+
+    {{-- stripe script --}}
+    <script src="https://js.stripe.com/v3/"></script>
 
 
-    <!--
-   CSS
-   ============================================= -->
+    <!-- CSS ================================== -->
 
     <link rel="stylesheet" href="{{ url('/travelista/css/linearicons.css') }}">
     <link rel="stylesheet" href="{{ url('/travelista/css/font-awesome.min.css') }}">
@@ -56,25 +54,16 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/rangePlugin.js"></script>
 
 
-    <link rel="stylesheet" href="{{ asset('/node_modules/flatpickr/dist/flatpickr.min.css') }}">
-    <script src="{{ asset('node_modules/flatpickr/dist/flatpickr.min.js') }}"></script>
-    <!-- Include Bootstrap CSS and JS -->
+    <!-- MapBox Bootstrap CSS and JS -->
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet' />
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
 
+    <!-- bootstrap links -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <!-- Include Bootstrap Datepicker CSS and JS -->
-    <link rel="stylesheet"
-        href="{{ asset('node_modules/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
-    <script src="{{ asset('node_modules/moment/min/moment.min.js') }}"></script>
-    <script src="{{ asset('node_modules/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}">
-    </script>
-
 </head>
 
 <body>
@@ -123,17 +112,6 @@
                                 <li><a href="{{ url('/blog-Details') }}">Blog Single</a></li>
                             </ul>
                         </li>
-                        {{-- <li class="menu-has-children"><a href="">Pages</a>
-                            <ul>
-                                <li><a href="elements.html">Elements</a></li>
-                                <li class="menu-has-children"><a href="">Level 2 </a>
-                                    <ul>
-                                        <li><a href="#">Item One</a></li>
-                                        <li><a href="#">Item Two</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li> --}}
                         <li><a href="{{ url('/contact-us') }}">Contact</a></li>
                     </ul>
                 </nav>
@@ -243,9 +221,6 @@
     <script src="{{ url('/travelista/js/vendor/jquery-2.2.4.min.js') }}"></script>
     <script src="{{ url('/travelista/js/popper.min.js') }}"></script>
     <script src="{{ url('/travelista/js/vendor/bootstrap.min.js') }}"></script>
-
-
-    {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFtycsKBJub_o-quAm-Ws9ytlpAwJdH9w"></script> --}}
     <script src="{{ url('/travelista/js/jquery-ui.js') }}"></script>
     <script src="{{ url('/travelista/js/easing.min.js') }}"></script>
     <script src="{{ url('/travelista/js/hoverIntent.js') }}"></script>
@@ -257,5 +232,4 @@
     <script src="{{ url('/travelista/js/mail-script.js') }}"></script>
     <script src="{{ url('/travelista/js/main.js') }}"></script>
 </body>
-
 </html>

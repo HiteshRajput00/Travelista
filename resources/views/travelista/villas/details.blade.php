@@ -16,7 +16,7 @@
                         {{ $villa->villa_name }}
                     </h1>
                     <p class="text-white link-nav"><a href="index.html">Home </a> <span class="lnr lnr-arrow-right"></span> <a
-                            href="{{ url('/villa-details?villa_id='.$villa->id) }}"> villa Details</a></p>
+                            href="{{ url('/villa-details?villa_id=' . $villa->id) }}"> villa Details</a></p>
                 </div>
             </div>
         </div>
@@ -85,39 +85,95 @@
                         <div id="map"></div>
                         <h2 class="mb-4">Book a Villa</h2>
 
-                        <form action="{{ url('/book-villa') }}" method="post">
+                        <form action="{{ url('/book-villa') }}" id="payment-form" method="post">
                             @csrf
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="guestName" class="form-label">Guest Name</label>
-                                    <input type="text" class="form-control" id="guestName" name="guestName" required>
+                                    <input type="text" class="form-control" id="guestName" name="guestName">
                                 </div>
+                                @error('guestName')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                                <div class="col-md-6">
+                                    <label for="contactInfo" class="form-label">email</label>
+                                    <input type="email" class="form-control" id="email" name="email">
+                                </div>
+                                @error('email')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                                 <div class="col-md-6">
                                     <label for="contactInfo" class="form-label">Contact Information</label>
-                                    <input type="text" class="form-control" id="contactInfo" name="contactInfo" required>
+                                    <input type="text" class="form-control" id="contactInfo" name="contact_number">
                                 </div>
+                                @error('contact_number')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
                             </div>
-
+                            <h4>Address</h4>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="guestName" class="form-label">house_number</label>
+                                    <input type="text" class="form-control" id="house_number" name="house_number">
+                                </div>
+                                @error('house_number')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                                <div class="col-md-6">
+                                    <label for="contactInfo" class="form-label">City</label>
+                                    <input type="text" class="form-control" id="City" name="City">
+                                </div>
+                                @error('City')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                                <div class="col-md-6">
+                                    <label for="contactInfo" class="form-label">State</label>
+                                    <input type="text" class="form-control" id="State" name="State">
+                                </div>
+                                @error('State')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                                <div class="col-md-6">
+                                    <label for="contactInfo" class="form-label">Country</label>
+                                    <input type="text" class="form-control" id="Country" value="INDIA"
+                                        name="Country">
+                                </div>
+                                @error('Country')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <hr>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="checkin" class="form-label">Check-in Date</label>
-                                    <input type="text" id="dateRange" class="form-control date-picker" name="start"
-                                        placeholder="Start " onfocus="this.placeholder = ''"
+                                    <input type="text" id="dateRange" class="form-control date-picker"
+                                        name="checkin_date" placeholder="Start " onfocus="this.placeholder = ''"
                                         onblur="this.placeholder = 'Start '">
+                                    @error('checkin_date')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <label for="checkout" class="form-label">Check-out Date</label>
-                                    <input type="text" class="form-control date-picker" name="end" placeholder="end"
-                                        id="checkout" onfocus="this.placeholder = ''" onblur="this.placeholder = 'end '">
+                                    <input type="text" class="form-control date-picker" name="checkout_date"
+                                        placeholder="end" id="checkout" onfocus="this.placeholder = ''"
+                                        onblur="this.placeholder = 'end '">
+                                    @error('checkout_date')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
 
                             <div class="row mb-3">
-                                <div class="col-md-6">
+                                <div class="col-md-6 ">
                                     <p>Total Nights: <span id="numberOfNights">0</span></p>
+                                    <input type="hidden" class="form-control" id="totalNights" name="totaldays"
+                                        readonly>
+                                </div>
+                                <div class="col-md-6 ">
                                     <p>Total Price: $<span id="totalPrice">0</span></p>
-                                    <input type="hidden" class="form-control" id="totalNights" name="totaldays" readonly>
-                                    <input type="hidden" class="form-control" id="total_price" name="price" readonly>
+                                    <input type="hidden" class="form-control" id="total_price" name="total_price"
+                                        readonly>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -128,9 +184,21 @@
                                             <option value="{{ $i }}">{{ $i }}</option>
                                         @endfor
                                     </select>
+                                    @error('numOfGuests')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
-
+                            <label class="form-label">Enter Card Details</label>
+                            <div class="row mb-3">
+                                <div class="col-md-8 form-group">
+                                    <div class="form-control" id="card-element"></div>
+                                    <div id="card-errors"></div>
+                                </div>
+                                @error('payment_method')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                             <button type="submit" class="btn btn-primary">Submit Booking</button>
                         </form>
                     </div>
@@ -139,10 +207,48 @@
         </div>
     </section>
 
+    <script>
+        var stripe = Stripe(
+            'pk_test_51OQ5lXSHuCTN4d6J0eysWWMeFXsyJBKreckgJD5oP9bYVvTrxZFU3FmlByyKSamJVb2BF8n6KrE4HQJmP7MZDRvQ00tpNTRse7'
+        );
+        var elements = stripe.elements();
+        var cardElement = elements.create('card');
+
+        cardElement.mount('#card-element');
+
+        // create card element //
+        var form = document.getElementById('payment-form');
+        var errorElement = document.getElementById('card-errors');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            stripe.createPaymentMethod({
+                type: 'card',
+                card: cardElement,
+            }).then(function(result) {
+                if (result.error) {
+                    errorElement.textContent = result.error.message;
+                } else {
+                    stripeTokenHandler(result.paymentMethod);
+                }
+            });
+        });
+
+        function stripeTokenHandler(paymentMethod) {
+            var hiddenInput = document.createElement('input');
+            hiddenInput.setAttribute('type', 'hidden');
+            hiddenInput.setAttribute('name', 'payment_method');
+            hiddenInput.setAttribute('value', paymentMethod.id);
+            form.appendChild(hiddenInput);
+            form.submit();
+        }
+    </script>
+
     {{-- flatpicker script --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var bookedDates = JSON.parse('{!! json_encode($bookings) !!}'); 
+            var bookedDates = JSON.parse('{!! json_encode($bookings) !!}');
             flatpickr('#dateRange', {
                 mode: 'range',
                 altInput: true,
@@ -198,7 +304,7 @@
 
         var villa = document.getElementById('villa-item');
         var firstVillaname = villa.getAttribute('data-villa-name');
-       
+
         var firstVillaLocation = [
             parseFloat(villa.getAttribute('data-long')),
             parseFloat(villa.getAttribute('data-lat'))
@@ -207,10 +313,10 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
             center: firstVillaLocation,
-            zoom: 9 
+            zoom: 12
         });
 
-       
+
         var marker = new mapboxgl.Marker()
             .setLngLat(firstVillaLocation)
             .addTo(map);
@@ -224,12 +330,12 @@
             .setHTML('<h5>' + firstVillaname + '</h5>')
             .addTo(map);
 
-            map.on('click', function (e) {
-            
+        map.on('click', function(e) {
+
             map.flyTo({
                 center: firstVillaLocation,
-                zoom: 20, 
-                essential: true 
+                zoom: 20,
+                essential: true
             });
         });
     </script>
