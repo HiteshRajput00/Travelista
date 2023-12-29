@@ -24,9 +24,16 @@
 
     <!-- Include jQuery UI -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqq7SVAxuvru2xwOaMqmCnF0HE-HS7x88&callback=initMap" async
-        defer></script>
+    {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAqq7SVAxuvru2xwOaMqmCnF0HE-HS7x88&callback=initMap" async
+        defer></script> --}}
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet">
+
+    <!-- Include noUiSlider CSS from CDN -->
+   <!-- Include noUiSlider CSS from CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.css">
+<script src="https://cdn.jsdelivr.net/npm/nouislider/distribute/nouislider.min.js"></script>
+
+
     <!--
    CSS
    ============================================= -->
@@ -52,6 +59,8 @@
     <link rel="stylesheet" href="{{ asset('/node_modules/flatpickr/dist/flatpickr.min.css') }}">
     <script src="{{ asset('node_modules/flatpickr/dist/flatpickr.min.js') }}"></script>
     <!-- Include Bootstrap CSS and JS -->
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.css' rel='stylesheet' />
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.7.0/mapbox-gl.js'></script>
 
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">

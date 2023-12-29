@@ -80,20 +80,32 @@
                         <form>
                             <div class="filter-content collapse show" id="collapse_3" style="">
                                 <div class="card-body">
-                                    <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="minPricePerNight">Min Price </label>
-                                            <input type="number" id="minPricePerNight" class="form-control"
-                                                placeholder="Enter min price per night">
-                                        </div>
-                                        <div class="form-group text-right col-md-6">
-                                            <label for="maxPricePerNight">Max Price </label>
-                                            <input type="number" id="maxPricePerNight" class="form-control"
-                                                placeholder="Enter max price per night">
+                                    <div class="form-group col-md-12">
+                                        <div class="form-row">
+                                            <style>
+                                                /* Style the container of the price slider */
+                                                #price-slider {
+                                                    width: 100%;
+                                                    margin: 20px auto;
+                                                }
+
+                                                /* Style the handles (the draggable parts of the slider) */
+                                                .noUi-handle {
+                                                    cursor: pointer;
+                                                    background-color: #3498db;
+                                                    border: 2px solid #2980b9;
+                                                }
+
+                                                /* Style the connect bar between the handles */
+                                                .noUi-connect {
+                                                    background-color: #3498db;
+                                                }
+                                            </style>
+                                            <div id="price-slider"></div>
+                                            <div id="price-display">Selected Price Range: <span id="price-values"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <button type="button" id="filterButton"
-                                        class="btn btn-block btn-primary">Apply</button>
                                 </div>
                             </div>
                         </form>
@@ -103,10 +115,10 @@
                             <a href="#" data-toggle="collapse" data-target="#collapse_4" aria-expanded="true"
                                 class="">
                                 <i class="icon-control fa fa-chevron-down"></i>
-                                <h6 class="title">Services </h6>
+                                <h6 class="title">Amenities </h6>
                             </a>
                         </header>
-                        <div class="filter-content collapse show" id="collapse_4" style="">
+                        <div class="filter-content collapse " id="collapse_4" style="">
                             <div class="card-body">
                                 <label class="checkbox-btn">
                                     <input type="checkbox" class="serviceCheckbox" value="swimming_pool">
@@ -133,7 +145,7 @@
                                 <h6 class="title">More filter </h6>
                             </a>
                         </header>
-                        <div class="filter-content collapse show" id="collapse_5" style="">
+                        <div class="filter-content collapse " id="collapse_5" style="">
                             <div class="card-body">
                                 <label for="guestCapacity">Number Of Guest:</label>
                                 <select id="guestCapacity" class="form-control">
@@ -164,7 +176,8 @@
                             data-lang="{{ $villa->location->lang }}" data-guest-capacity="{{ $villa->guest_capacity }}"
                             data-price-per-night="{{ $villa->price }}"
                             data-location="{{ $villa->location->city }}, {{ $villa->location->state }}, {{ $villa->location->country }}"
-                            data-services="{{ implode(' ', json_decode($villa->amenities, true)) }}">
+                            data-services="{{ implode(' ', json_decode($villa->amenities, true)) }}"
+                            data-villa-name="{{ $villa->villa_name }}">
                             <div class="single-destinations">
                                 <div class="thumb">
                                     <img src="{{ url('/images/' . $villa->image) }}" alt="">
@@ -209,127 +222,12 @@
         </div>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    {{-- <script>
-        $(document).ready(function() {
-            $('#search-input').on('input', function() {
-                const query = $(this).val();
 
-                $.ajax({
-                    url: '/autocomplete',
-                    method: 'GET',
-                    data: {
-                        query: query
-                    },
-                    success: function(data) {
-                        if (data.length > 0) {
-                            displayResults(data);
-                        } else {
-                            displayNoResultsMessage();
-                        }
-                    },
-                    error: function(error) {
-                        console.error('Error:', error);
-                    }
-                });
-            });
-
-            function displayNoResultsMessage() {
-                $('#results-container').empty();
-                const noResultsMessage = $('<div class="result-item">Not available</div>');
-                $('#results-container').append(noResultsMessage);
-                $('#results-container').show();
-            }
-
-            function displayResults(results) {
-                // Clear previous results
-                $('#results-container').empty();
-
-                // Display new results
-                results.forEach(result => {
-                    const resultElement = $('<div class="result-item">' + result.city + ',' + result.state +
-                        '</div>');
-                    resultElement.css('cursor', 'pointer');
-                    resultElement.click(function() {
-                        // Combine city, state, and country when setting the input value
-                        const selectedValue = result.city + ', ' + result.state + ', ' + result
-                            .country;
-                        $('#search-input').val(selectedValue);
-                        $('#searchdiv').text(selectedValue);
-                        $('#results-container')
-                            .hide();
-                        $('#collapse_2').show();
-                        $('.villa-item').each(function() {
-                            var villaLocation = $(this).data('location');
-
-                            var showVilla = (!selectedValue || villaLocation.includes(
-                                selectedValue));
-
-                            $(this).toggle(showVilla);
-                        });
-                    });
-
-                    $('#results-container').append(resultElement);
-                });
-
-                $('#results-container').show();
-            }
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('.serviceCheckbox').change(function() {
-                var selectedServices = $('.serviceCheckbox:checked').map(function() {
-                    return $(this).val();
-                }).get();
-
-                $('.villa-item').each(function() {
-                    var villaServices = $(this).data('services').split(' ');
-                    var showVilla = selectedServices.every(function(service) {
-                        return villaServices.includes(service);
-                    });
-
-                    $(this).toggle(showVilla);
-                });
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#guestCapacity').change(function() {
-                var selectedCapacity = $(this).val();
-
-                $('.villa-item').each(function() {
-                    var villaCapacity = $(this).data('guest-capacity');
-                    var showVilla = selectedCapacity === '' || villaCapacity >= parseInt(
-                        selectedCapacity);
-                    $(this).toggle(showVilla);
-                });
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('#filterButton').click(function() {
-                var minPricePerNight = $('#minPricePerNight').val();
-                var maxPricePerNight = $('#maxPricePerNight').val();
-
-                $('.villa-item').each(function() {
-                    var villaPrice = $(this).data('price-per-night');
-
-                    var showVilla =
-                        (!minPricePerNight || villaPrice >= parseInt(minPricePerNight)) &&
-                        (!maxPricePerNight || villaPrice <= parseInt(maxPricePerNight));
-                    $(this).toggle(showVilla);
-                });
-            });
-        });
-    </script> --}}
-
+    {{-- fliters script --}}
     <script>
         $(document).ready(function() {
 
             $('#search-input').on('input', function() {
-                // applyFilters();
 
                 const query = $(this).val();
 
@@ -388,7 +286,7 @@
                     $('#results-container').hide();
                 }
             }
-          
+
 
             $('.serviceCheckbox').change(function() {
                 applyFilters();
@@ -398,14 +296,19 @@
                 applyFilters();
             });
 
-            $('#filterButton').click(function() {
+            var priceSlider = document.getElementById('price-slider');
+            var priceDisplay = document.getElementById('price-values');
+
+            priceSlider.noUiSlider.on('update', function(values, handle) {
+                priceDisplay.innerText = '$' + values[0] + ' - $' + values[1];
+
                 applyFilters();
             });
 
             function applyFilters() {
                 var selectedValue = $('#search-input').val();
-                var minPricePerNight = $('#minPricePerNight').val();
-                var maxPricePerNight = $('#maxPricePerNight').val();
+                var minPricePerNight = priceSlider.noUiSlider.get()[0];
+                var maxPricePerNight = priceSlider.noUiSlider.get()[1];
                 var selectedServices = $('.serviceCheckbox:checked').map(function() {
                     return $(this).val();
                 }).get();
@@ -430,42 +333,113 @@
             }
         });
     </script>
-
+    {{-- mapbox script --}}
     <script>
-        function initMap() {
-            // Create a map centered at a specific location
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: {
-                    lat: -34.397,
-                    lng: 150.644
-                },
-                zoom: 8
+        mapboxgl.accessToken =
+            'pk.eyJ1IjoidHJhZGVkbWVkaWEiLCJhIjoiY2tvYjNoaTV6MDR4eDJvbzI5NDBzNTltdiJ9.0SL_APVAwIlAIJO17FaZXA';
+
+        var villas = document.querySelectorAll('.villa-item');
+        var firstVillaname = villas[0].getAttribute('data-villa-name');
+        // Store the coordinates of the first villa
+        var firstVillaLocation = [
+            parseFloat(villas[0].getAttribute('data-lang')),
+            parseFloat(villas[0].getAttribute('data-lat'))
+        ];
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: firstVillaLocation,
+            zoom: 9 // Adjust the initial zoom level
+        });
+
+        // Create a single marker for all villas
+        var marker = new mapboxgl.Marker()
+            .setLngLat(firstVillaLocation)
+            .addTo(map);
+
+        var popup = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false
+        });
+
+        popup.setLngLat(firstVillaLocation)
+            .setHTML('<h5>' + firstVillaname + '</h5>')
+            .addTo(map);
+
+        // Sample villas
+        var villas = document.querySelectorAll('.villa-item');
+
+        villas.forEach(function(villa) {
+            var villaName = villa.getAttribute('data-villa-name');
+            var villaLocation = [
+                parseFloat(villa.getAttribute('data-lang')),
+                parseFloat(villa.getAttribute('data-lat'))
+            ];
+
+            var popup = new mapboxgl.Popup({
+                closeButton: false,
+                closeOnClick: false
             });
 
-            // Add a marker to the map
-            var marker = new google.maps.Marker({
-                position: {
-                    lat: -34.397,
-                    lng: 150.644
-                },
-                map: map,
-            });
-
-            var villas = document.querySelectorAll('.villa-item');
-
-            villas.forEach(function(villa) {
-                villa.addEventListener('mouseover', function() {
-                    // Fetch the coordinates of the hovered villa
-                    var newLocation = {
-                        lat: parseFloat(villa.getAttribute('data-lat')),
-                        lng: parseFloat(villa.getAttribute('data-lang'))
-                    };
-                    console.log(newLocation);
-                    // Update the map's center and marker position
-                    map.setCenter(newLocation);
-                    marker.setPosition(newLocation);
+            villa.addEventListener('mouseenter', function() {
+                // Update the map's center and marker position
+                map.flyTo({
+                    center: villaLocation,
+                    essential: true // animation is considered essential with a duration of 2000 ms
                 });
+
+                marker.setLngLat(villaLocation);
+
+                // Display the villa name in a popup
+                popup.setLngLat(villaLocation)
+                    .setHTML('<h5>' + villaName + '</h5>')
+                    .addTo(map);
             });
-        }
+
+            villa.addEventListener('mouseleave', function() {
+                // Reset the map location and remove the popup on mouse leave
+                map.flyTo({
+                    center: lastHoveredVillaLocation,
+                    essential: true
+                });
+
+                popup.remove();
+            });
+        });
     </script>
+    {{-- price range script --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var priceSlider = document.getElementById('price-slider');
+            var priceDisplay = document.getElementById('price-values');
+
+            // Sample prices for villas (replace this with your actual data)
+            var villaPrices = [
+                10000, 15000, 20000, 25000, 30000, 40000, 50000
+            ];
+
+            // Calculate the min and max prices
+            var minPrice = Math.min(...villaPrices);
+            var maxPrice = Math.max(...villaPrices);
+
+            noUiSlider.create(priceSlider, {
+                start: [minPrice, maxPrice], // Initial values
+                connect: true,
+                range: {
+                    'min': minPrice,
+                    'max': maxPrice
+                }
+            });
+
+            // Example: Listen for changes in the price slider
+            priceSlider.noUiSlider.on('update', function(values, handle) {
+                // Handle the updated values
+                console.log('Slider updated:', values);
+
+                // Display the selected price values
+                priceDisplay.innerText = '$' + values[0] + ' - $' + values[1];
+            });
+        });
+    </script>
+
 @endsection

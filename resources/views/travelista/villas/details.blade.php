@@ -13,10 +13,10 @@
             <div class="row d-flex align-items-center justify-content-center">
                 <div class="about-content col-lg-12">
                     <h1 class="text-white">
-                        About Us
+                        {{ $villa->villa_name }}
                     </h1>
                     <p class="text-white link-nav"><a href="index.html">Home </a> <span class="lnr lnr-arrow-right"></span> <a
-                            href="about.html"> villa Details</a></p>
+                            href="{{ url('/villa-details?villa_id='.$villa->id) }}"> villa Details</a></p>
                 </div>
             </div>
         </div>
@@ -24,8 +24,9 @@
     <!-- End banner Area -->
     <!-- Start insurence-one Area -->
     <section class="insurence-one-area section-gap">
-        <div class="container">
-            <div class="row align-items-center">
+        <div class="container " id="villa-item" data-villa-name="{{ $villa->villa_name }}"
+            data-lat="{{ $villa->location->lat }}" data-long="{{ $villa->location->lang }}">
+            <div class="row align-items">
                 <div class="col-lg-4">
                     <div class="single-destinations">
                         <div class="thumb">
@@ -65,7 +66,6 @@
                                         <span>Yes</span>
                                     </li>
                                 @endforeach
-
                                 <li class="d-flex justify-content-between align-items-center">
                                     <span>Price per night</span>
                                     <p>{{ $villa->price }}</p>
@@ -74,8 +74,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6 p-40 insurence-right">
+                <div class="col-lg-8  insurence-right">
                     <div class="container p-lg-3">
+                        <style>
+                            #map {
+                                height: 350px;
+                                width: 100%;
+                            }
+                        </style>
+                        <div id="map"></div>
                         <h2 class="mb-4">Book a Villa</h2>
 
                         <form action="{{ url('/book-villa') }}" method="post">
@@ -107,13 +114,10 @@
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <div id="result"></div>
-                                    <label for="totaldays" class="form-label">Number of days</label>
-                                    <input type="text" class="form-control" id="total_days" name="totaldays" readonly>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="price" class="form-label">total price</label>
-                                    <input type="text" class="form-control" id="total_price" name="price" readonly>
+                                    <p>Total Nights: <span id="numberOfNights">0</span></p>
+                                    <p>Total Price: $<span id="totalPrice">0</span></p>
+                                    <input type="hidden" class="form-control" id="totalNights" name="totaldays" readonly>
+                                    <input type="hidden" class="form-control" id="total_price" name="price" readonly>
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -131,16 +135,14 @@
                         </form>
                     </div>
                 </div>
-                <div id="map"></div>
-
             </div>
         </div>
     </section>
 
+    {{-- flatpicker script --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var bookedDates = JSON.parse('{!! json_encode($bookings) !!}'); // Parse the JSON string into an array
-            console.log("Booked Dates:", bookedDates);
+            var bookedDates = JSON.parse('{!! json_encode($bookings) !!}'); 
             flatpickr('#dateRange', {
                 mode: 'range',
                 altInput: true,
@@ -152,7 +154,6 @@
                         return date >= checkinDate && date <= checkoutDate;
                     });
 
-                    // Format the currentDate as yyyy-mm-dd
                     var currentDate = date.toISOString().split('T')[0];
 
                     var isCheckinCheckoutDate = bookedDates.some(function(booking) {
@@ -170,10 +171,66 @@
                 onChange: function(selectedDates, dateStr, instance) {
                     if (selectedDates.length === 2) {
                         document.getElementById('checkout').value = dateStr.split(" to ")[0];
+
+                        var checkinDate = selectedDates[0];
+                        var checkoutDate = selectedDates[1];
+
+                        var numberOfNights = Math.ceil((checkoutDate - checkinDate) / (1000 * 60 * 60 *
+                            24));
+
+                        var totalPrice = numberOfNights * {{ $villa->price }};
+
+                        document.getElementById('totalNights').value = numberOfNights;
+                        document.getElementById('total_price').value = totalPrice;
+                        document.getElementById('numberOfNights').textContent = numberOfNights;
+                        document.getElementById('totalPrice').textContent = totalPrice;
+
                     }
                 }
             });
         });
     </script>
-   
+
+    {{-- mapbox script --}}
+    <script>
+        mapboxgl.accessToken =
+            'pk.eyJ1IjoidHJhZGVkbWVkaWEiLCJhIjoiY2tvYjNoaTV6MDR4eDJvbzI5NDBzNTltdiJ9.0SL_APVAwIlAIJO17FaZXA';
+
+        var villa = document.getElementById('villa-item');
+        var firstVillaname = villa.getAttribute('data-villa-name');
+       
+        var firstVillaLocation = [
+            parseFloat(villa.getAttribute('data-long')),
+            parseFloat(villa.getAttribute('data-lat'))
+        ];
+        var map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v11',
+            center: firstVillaLocation,
+            zoom: 9 
+        });
+
+       
+        var marker = new mapboxgl.Marker()
+            .setLngLat(firstVillaLocation)
+            .addTo(map);
+
+        var popup = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: false
+        });
+
+        popup.setLngLat(firstVillaLocation)
+            .setHTML('<h5>' + firstVillaname + '</h5>')
+            .addTo(map);
+
+            map.on('click', function (e) {
+            
+            map.flyTo({
+                center: firstVillaLocation,
+                zoom: 20, 
+                essential: true 
+            });
+        });
+    </script>
 @endsection
