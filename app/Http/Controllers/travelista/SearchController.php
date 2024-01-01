@@ -4,6 +4,7 @@ namespace App\Http\Controllers\travelista;
 
 use App\Http\Controllers\Controller;
 use App\Models\BookedVilla;
+use App\Models\User;
 use App\Models\VillaLocation;
 use App\Models\Villas;
 use Illuminate\Http\Request;
@@ -55,5 +56,11 @@ class SearchController extends Controller
 
         return view('travelista.villas.index', compact('villa_list'));
 
+    }
+
+    Public function findbooking(Request $request)
+    {
+        $user = User::where('email',$request->email)->first();
+        
     }
 }

@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'customer_stripe_id'
     ];
 
     /**
@@ -42,4 +43,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function details()
+    {
+        return $this->hasOne(BillingDetails::class,'user_id','id');
+    }
 }

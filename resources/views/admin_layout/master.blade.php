@@ -98,7 +98,7 @@
                                 </div>
                                 <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
                                 <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
-                                <a class="dropdown-item" href="#"><i
+                                <a class="dropdown-item" href="{{ url('/logout') }}"><i
                                         class="fas fa-power-off mr-2"></i>Logout</a>
                             </div>
                         </li>
@@ -198,6 +198,18 @@
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" href="pages/data-tables.html">All villas</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false"
+                                    data-target="#submenu-6" aria-controls="submenu-6"><i
+                                        class="fas fa-fw fa-table"></i>Booked Villas</a>
+                                <div id="submenu-6" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{ url('/admin-dashboard/booked-villa') }}">Booked villa</a>
                                         </li>
                                     </ul>
                                 </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\BookedVilla;
 use App\Models\VillaLocation;
 use App\Models\Villas;
 use Illuminate\Http\Request;
@@ -60,5 +61,11 @@ class villasController extends Controller
             $addr->save();
         }
         return redirect()->back()->with('success');
+    }
+
+    Public function Bookedvillas()
+    {
+        $booked_villas = BookedVilla::where('booking_status' ,'=','confirmed')->get();
+        dd($booked_villas);
     }
 }

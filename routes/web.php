@@ -52,9 +52,12 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/admin-dashboard/add-villa', [villasController::class, 'AddVillaPage']);
     Route::post('/store-villa', [villasController::class, 'storevilla']);
     Route::get('/admin-dashboard/all-villas', [villasController::class, 'Allvillas']);
+    Route::get('/admin-dashboard/booked-villa', [villasController::class, 'Bookedvillas']);
 });
 //::::::::::::::::::::: Booking villa :::::::::::::::::::::::::::::::://
 Route::post('/book-villa', [BookingController::class, 'Bookvilla']);
+Route::get('/booking-details',[BookingController::class,'bookingdetails']);
+Route::get('/find-booking',[SearchController::class,'findbooking']);
 
 //::::::::::::::: testing datepicker ::::::::::::::::::::::://
 Route::get('/test',[DashboardController::class,'test']);

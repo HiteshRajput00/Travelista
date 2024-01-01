@@ -47,7 +47,7 @@
         </div>
     </section>
 
-    <section class="destinations-area section-gap d-flex">
+    <section class="destinations-area section-gap">
         <div class="container d-flex ">
             <aside class="col-md-3">
                 <div class="card">
@@ -169,7 +169,7 @@
                 </div>
             </aside>
 
-            <div class="row" id="loadedViewContainer">
+            <div class="row p-3"  style="width: -webkit-fill-available;" id="loadedViewContainer">
                 @if ($villa_list)
                     @foreach ($villa_list as $villa)
                         <div class="col-lg-4 villa-item" data-lat ="{{ $villa->location->lat }}"
@@ -197,15 +197,15 @@
                                         {{ $villa->location->city }} , {{ $villa->location->state }},
                                         {{ $villa->location->country }}
                                     </p>
-                                    <p>Guest Capacity:<strong>&nbsp;{{ $villa->guest_capacity }}</strong></p>
+                                    {{-- <p>Guest Capacity:<strong>&nbsp;{{ $villa->guest_capacity }}</strong></p> --}}
                                     <ul class="package-list">
                                         <?php $amenities = json_decode($villa->amenities, true); ?>
-                                        @foreach ($amenities as $list)
+                                        {{-- @foreach ($amenities as $list)
                                             <li class="d-flex justify-content-between align-items-center">
                                                 <span>{{ $list }}</span>
                                                 <span>Yes</span>
                                             </li>
-                                        @endforeach
+                                        @endforeach --}}
 
                                         <li class="d-flex justify-content-between align-items-center">
                                             <span>Price per night</span>

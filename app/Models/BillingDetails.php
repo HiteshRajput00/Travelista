@@ -14,4 +14,9 @@ class BillingDetails extends Model
      'email',
      'Contact_number'
     ];
+
+    public function bookedvillas()
+    {
+        return $this->hasMany(BookedVilla::class,'billing_details_id','id');
+    }
 }

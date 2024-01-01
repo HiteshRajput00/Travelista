@@ -87,61 +87,161 @@
 
                         <form action="{{ url('/book-villa') }}" id="payment-form" method="post">
                             @csrf
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="guestName" class="form-label">Guest Name</label>
-                                    <input type="text" class="form-control" id="guestName" name="guestName">
+                            @auth
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="guestName" class="form-label">Guest Name</label>
+                                        <input type="text" class="form-control" id="guestName"
+                                            value="{{ Auth::user()->name }}" name="guestName">
+                                    </div>
+                                    @error('guestName')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                    <div class="col-md-6">
+                                        <label for="contactInfo" class="form-label">email</label>
+                                        <input type="email" class="form-control" id="email"
+                                            value="{{ Auth::user()->email }}" name="email">
+                                    </div>
+                                    @error('email')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                    <div class="col-md-6">
+                                        <label for="contactInfo" class="form-label">Contact Information</label>
+                                        <input type="text" class="form-control" id="contactInfo"
+                                            value="{{ Auth::user()->mobile_number }}" name="contact_number">
+                                    </div>
+                                    @error('contact_number')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                @error('guestName')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                                <div class="col-md-6">
-                                    <label for="contactInfo" class="form-label">email</label>
-                                    <input type="email" class="form-control" id="email" name="email">
+                                @if (Auth::user()->details)
+                                    <h4>Address</h4>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="guestName" class="form-label">house_number</label>
+                                            <input type="text" class="form-control" id="house_number"
+                                                value="{{ Auth::user()->details->house_number }}" name="house_number">
+                                        </div>
+                                        @error('house_number')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                        <div class="col-md-6">
+                                            <label for="contactInfo" class="form-label">City</label>
+                                            <input type="text" class="form-control" id="City"
+                                                value="{{ Auth::user()->details->city }}" name="City">
+                                        </div>
+                                        @error('City')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                        <div class="col-md-6">
+                                            <label for="contactInfo" class="form-label">State</label>
+                                            <input type="text" class="form-control" id="State"
+                                                value="{{ Auth::user()->details->state }}" name="State">
+                                        </div>
+                                        @error('State')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                        <div class="col-md-6">
+                                            <label for="contactInfo" class="form-label">Country</label>
+                                            <input type="text" class="form-control" id="Country"
+                                                value="{{ Auth::user()->details->country }}" value="US" name="Country">
+                                        </div>
+                                        @error('Country')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                @else
+                                    <h4>Address</h4>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="guestName" class="form-label">house_number</label>
+                                            <input type="text" class="form-control" id="house_number"
+                                                name="house_number">
+                                        </div>
+                                        @error('house_number')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                        <div class="col-md-6">
+                                            <label for="contactInfo" class="form-label">City</label>
+                                            <input type="text" class="form-control" id="City" name="City">
+                                        </div>
+                                        @error('City')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                        <div class="col-md-6">
+                                            <label for="contactInfo" class="form-label">State</label>
+                                            <input type="text" class="form-control" id="State" name="State">
+                                        </div>
+                                        @error('State')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                        <div class="col-md-6">
+                                            <label for="contactInfo" class="form-label">Country</label>
+                                            <input type="text" class="form-control" id="Country" value="US"
+                                                name="Country">
+                                        </div>
+                                        @error('Country')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                @endif
+                            @else
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="guestName" class="form-label">Guest Name</label>
+                                        <input type="text" class="form-control" id="guestName" name="guestName">
+                                    </div>
+                                    @error('guestName')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                    <div class="col-md-6">
+                                        <label for="contactInfo" class="form-label">email</label>
+                                        <input type="email" class="form-control" id="email" name="email">
+                                    </div>
+                                    @error('email')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                    <div class="col-md-6">
+                                        <label for="contactInfo" class="form-label">Contact Information</label>
+                                        <input type="text" class="form-control" id="contactInfo" name="contact_number">
+                                    </div>
+                                    @error('contact_number')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                @error('email')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                                <div class="col-md-6">
-                                    <label for="contactInfo" class="form-label">Contact Information</label>
-                                    <input type="text" class="form-control" id="contactInfo" name="contact_number">
+                                <h4>Address</h4>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="guestName" class="form-label">house_number</label>
+                                        <input type="text" class="form-control" id="house_number" name="house_number">
+                                    </div>
+                                    @error('house_number')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                    <div class="col-md-6">
+                                        <label for="contactInfo" class="form-label">City</label>
+                                        <input type="text" class="form-control" id="City" name="City">
+                                    </div>
+                                    @error('City')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                    <div class="col-md-6">
+                                        <label for="contactInfo" class="form-label">State</label>
+                                        <input type="text" class="form-control" id="State" name="State">
+                                    </div>
+                                    @error('State')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                    <div class="col-md-6">
+                                        <label for="contactInfo" class="form-label">Country</label>
+                                        <input type="text" class="form-control" id="Country" value="US"
+                                            name="Country">
+                                    </div>
+                                    @error('Country')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                @error('contact_number')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <h4>Address</h4>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label for="guestName" class="form-label">house_number</label>
-                                    <input type="text" class="form-control" id="house_number" name="house_number">
-                                </div>
-                                @error('house_number')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                                <div class="col-md-6">
-                                    <label for="contactInfo" class="form-label">City</label>
-                                    <input type="text" class="form-control" id="City" name="City">
-                                </div>
-                                @error('City')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                                <div class="col-md-6">
-                                    <label for="contactInfo" class="form-label">State</label>
-                                    <input type="text" class="form-control" id="State" name="State">
-                                </div>
-                                @error('State')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                                <div class="col-md-6">
-                                    <label for="contactInfo" class="form-label">Country</label>
-                                    <input type="text" class="form-control" id="Country" value="INDIA"
-                                        name="Country">
-                                </div>
-                                @error('Country')
-                                    <div class="alert alert-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            @endauth
                             <hr>
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -163,7 +263,7 @@
                                     @enderror
                                 </div>
                             </div>
-
+                            <input type="hidden" name="villa_id" value="{{ $villa->id }}">
                             <div class="row mb-3">
                                 <div class="col-md-6 ">
                                     <p>Total Nights: <span id="numberOfNights">0</span></p>
@@ -249,6 +349,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var bookedDates = JSON.parse('{!! json_encode($bookings) !!}');
+            console.log(bookedDates);
             flatpickr('#dateRange', {
                 mode: 'range',
                 altInput: true,
@@ -257,18 +358,11 @@
                     var isBooked = bookedDates.some(function(booking) {
                         var checkinDate = new Date(booking.checkin_date);
                         var checkoutDate = new Date(booking.checkout_date);
+                        checkinDate.setHours(0, 0, 0, 0);
+                        checkoutDate.setHours(23, 59, 59, 999);
                         return date >= checkinDate && date <= checkoutDate;
                     });
-
-                    var currentDate = date.toISOString().split('T')[0];
-
-                    var isCheckinCheckoutDate = bookedDates.some(function(booking) {
-                        return currentDate === booking.checkin_date || currentDate ===
-                            booking
-                            .checkout_date;
-                    });
-
-                    return isBooked || isCheckinCheckoutDate;
+                    return isBooked;
                 }],
                 plugins: [new rangePlugin({
                     input: '#dateRange'
@@ -276,7 +370,10 @@
 
                 onChange: function(selectedDates, dateStr, instance) {
                     if (selectedDates.length === 2) {
-                        document.getElementById('checkout').value = dateStr.split(" to ")[0];
+                        document.getElementById('dateRange').value = flatpickr.formatDate(selectedDates[
+                            0], "F j, Y");
+                        document.getElementById('checkout').value = flatpickr.formatDate(selectedDates[
+                            1], "F j, Y");
 
                         var checkinDate = selectedDates[0];
                         var checkoutDate = selectedDates[1];
