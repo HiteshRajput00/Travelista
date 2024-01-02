@@ -105,7 +105,7 @@
                         <li><a href="{{ url('/about-us') }}">About</a></li>
                         <li><a href="{{ url('/villas') }}">villas</a></li>
                         <li><a href="{{ url('/hotels') }}">Hotels</a></li>
-                        <li><a href="{{ url('/insurance') }}">Insurence</a></li>
+                        <li><a href="{{ url('/booking-details') }}">Bookings</a></li>
                         <li class="menu-has-children"><a href="">Blog</a>
                             <ul>
                                 <li><a href="{{ url('/blogs') }}">Blog Home</a></li>

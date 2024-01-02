@@ -22,7 +22,7 @@
         <h4>From {{ $userdata['checkin_date'] }} to  {{ $userdata['checkout_date'] }}</h4>
         <h4>Total price: {{ $userdata['total_amount'] }} </h4>
     </p>
-    <h3>{{ $userdata['description'] }}</h3>
+    <h3>{{ $usdata['description'] }}</h3>
 </body>
 
 </html>

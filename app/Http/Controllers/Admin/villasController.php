@@ -58,14 +58,10 @@ class villasController extends Controller
             $addr->city = $request->city;
             $addr->state = $request->state;
             $addr->country = $request->country;
+            $addr->lat = $request->latitude;
+            $addr->lang = $request->longitude;
             $addr->save();
         }
         return redirect()->back()->with('success');
-    }
-
-    Public function Bookedvillas()
-    {
-        $booked_villas = BookedVilla::where('booking_status' ,'=','confirmed')->get();
-        dd($booked_villas);
     }
 }

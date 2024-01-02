@@ -105,6 +105,27 @@
                                                 class="custom-control-input"><span class="custom-control-label">Wi-Fi
                                             </span>
                                         </label>
+                                        <label class="custom-control custom-checkbox">
+                                            <input id="ck2" name="service[]" type="checkbox"
+                                                data-parsley-multiple="groups" value="Park" data-parsley-mincheck="2"
+                                                data-parsley-errors-container="#error-container1"
+                                                class="custom-control-input"><span class="custom-control-label">Park
+                                            </span>
+                                        </label>
+                                        <label class="custom-control custom-checkbox">
+                                            <input id="ck2" name="service[]" type="checkbox"
+                                                data-parsley-multiple="groups" value="air_condition" data-parsley-mincheck="2"
+                                                data-parsley-errors-container="#error-container1"
+                                                class="custom-control-input"><span class="custom-control-label">air condition
+                                            </span>
+                                        </label>
+                                        <label class="custom-control custom-checkbox">
+                                            <input id="ck2" name="service[]" type="checkbox"
+                                                data-parsley-multiple="groups" value="TV" data-parsley-mincheck="2"
+                                                data-parsley-errors-container="#error-container1"
+                                                class="custom-control-input"><span class="custom-control-label">TV
+                                            </span>
+                                        </label>
                                         <div id="error-container1"></div>
                                     </div>
                                 </div>
@@ -124,6 +145,16 @@
                                         <label for="validationCustom05">country</label>
                                         <input type="text" class="form-control" name="country"
                                             id="validationCustom05" placeholder="country">
+                                    </div>
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                        <label for="validationCustom05">latitude</label>
+                                        <input type="text" class="form-control" name="latitude"
+                                            id="validationCustom05" placeholder="latitude">
+                                    </div>
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12 mb-2">
+                                        <label for="validationCustom05">longitude</label>
+                                        <input type="text" class="form-control" name="longitude"
+                                            id="validationCustom05" placeholder="longitude">
                                     </div>
                                 </div>
                                 {{-- <!-- ============================================================== -->

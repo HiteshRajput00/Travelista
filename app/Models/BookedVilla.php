@@ -12,4 +12,9 @@ class BookedVilla extends Model
     protected $fillable =[
         'booking_status'
     ];
+
+    public function guest()
+    {
+        return $this->belongsTo(BillingDetails::class,'billing_details_id', 'id');
+    }
 }

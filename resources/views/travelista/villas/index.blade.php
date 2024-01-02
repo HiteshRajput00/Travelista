@@ -134,6 +134,14 @@
                                     <input type="checkbox" class="serviceCheckbox" value="Park">
                                     <span class="btn btn-light"> Park </span>
                                 </label>
+                                <label class="checkbox-btn">
+                                    <input type="checkbox" class="serviceCheckbox" value="TV">
+                                    <span class="btn btn-light"> TV </span>
+                                </label>
+                                <label class="checkbox-btn">
+                                    <input type="checkbox" class="serviceCheckbox" value="air_condition">
+                                    <span class="btn btn-light"> air condition </span>
+                                </label>
                             </div>
                         </div>
                     </article>
@@ -169,7 +177,7 @@
                 </div>
             </aside>
 
-            <div class="row p-3"  style="width: -webkit-fill-available;" id="loadedViewContainer">
+            <div class="row p-3" style="width: -webkit-fill-available;" id="loadedViewContainer">
                 @if ($villa_list)
                     @foreach ($villa_list as $villa)
                         <div class="col-lg-4 villa-item" data-lat ="{{ $villa->location->lat }}"
@@ -263,7 +271,7 @@
 
                 // Display new results
                 results.forEach(result => {
-                    const resultElement = $('<div class="result-item">' + result.city + ',' + result.state +
+                    const resultElement = $('<div class="result-item">' + result.city + ',' + result.state +','+result.country +
                         '</div>');
                     resultElement.css('cursor', 'pointer');
                     resultElement.click(function() {
@@ -333,14 +341,13 @@
             }
         });
     </script>
-    {{-- mapbox script --}}
+    {{-- mapbox script --}}\
     <script>
-        mapboxgl.accessToken =
-            'pk.eyJ1IjoidHJhZGVkbWVkaWEiLCJhIjoiY2tvYjNoaTV6MDR4eDJvbzI5NDBzNTltdiJ9.0SL_APVAwIlAIJO17FaZXA';
-
+        mapboxgl.accessToken = 'pk.eyJ1IjoidHJhZGVkbWVkaWEiLCJhIjoiY2tvYjNoaTV6MDR4eDJvbzI5NDBzNTltdiJ9.0SL_APVAwIlAIJO17FaZXA';
+    
         var villas = document.querySelectorAll('.villa-item');
         var firstVillaname = villas[0].getAttribute('data-villa-name');
-       
+    
         var firstVillaLocation = [
             parseFloat(villas[0].getAttribute('data-lang')),
             parseFloat(villas[0].getAttribute('data-lat'))
@@ -349,60 +356,163 @@
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v11',
             center: firstVillaLocation,
-            zoom: 12 
+            zoom: 12
         });
-
+    
         var marker = new mapboxgl.Marker()
             .setLngLat(firstVillaLocation)
             .addTo(map);
-
+    
         var popup = new mapboxgl.Popup({
             closeButton: false,
             closeOnClick: false
         });
-
+    
         popup.setLngLat(firstVillaLocation)
             .setHTML('<h5>' + firstVillaname + '</h5>')
             .addTo(map);
-
+    
+        var clusterLayerId = 'clusters-layer';
+        var clusterCountLayerId = 'cluster-count';
+    
         // Sample villas
-        var villas = document.querySelectorAll('.villa-item');
-
-        villas.forEach(function(villa) {
+        var villasArray = Array.from(villas);
+    
+        villasArray.forEach(function(villa, index) {
             var villaName = villa.getAttribute('data-villa-name');
             var villaLocation = [
                 parseFloat(villa.getAttribute('data-lang')),
                 parseFloat(villa.getAttribute('data-lat'))
             ];
-
+    
             var popup = new mapboxgl.Popup({
                 closeButton: false,
                 closeOnClick: false
             });
-
+    
             villa.addEventListener('mouseenter', function() {
+                // lastHoveredVillaLocation = villaLocation;
                 map.flyTo({
                     center: villaLocation,
-                    essential: true 
+                    zoom: 10,
+                    essential: true
                 });
-
+    
                 marker.setLngLat(villaLocation);
-
+    
                 popup.setLngLat(villaLocation)
                     .setHTML('<h5>' + villaName + '</h5>')
                     .addTo(map);
+    
+                // Add clusters for other villas when hovering over a villa
+                var otherVillasData = villasArray.filter((_, i) => i !== index);
+                addCluster(otherVillasData);
             });
-
+    
             villa.addEventListener('mouseleave', function() {
                 map.flyTo({
                     center: lastHoveredVillaLocation,
                     essential: true
                 });
-
+    
+                // Add a cluster when mouse leaves
+                addCluster(villasArray);
+    
                 popup.remove();
             });
+    
+            villa.addEventListener('click', function() {
+                // Zoom in when a villa is clicked
+                map.flyTo({
+                    center: villaLocation,
+                    zoom: 14,
+                    essential: true
+                });
+            });
         });
+    
+        function addCluster(villasData) {
+            // Filter out villas without a location
+            var villaData = villasData
+                .filter(villa => villa.hasAttribute('data-lang') && villa.hasAttribute('data-lat'))
+                .map(villa => {
+                    return {
+                        name: villa.getAttribute('data-villa-name'),
+                        location: [
+                            parseFloat(villa.getAttribute('data-lang')),
+                            parseFloat(villa.getAttribute('data-lat'))
+                        ]
+                    };
+                });
+    
+            // Add or update the cluster layer
+            if (map.getLayer(clusterLayerId)) {
+                map.getSource('villas').setData(getGeoJSONFeatures(villaData));
+            } else {
+                map.addSource('villas', {
+                    type: 'geojson',
+                    data: getGeoJSONFeatures(villaData)
+                });
+    
+                // Create a layer for individual villa points
+                map.addLayer({
+                    id: 'villas-layer',
+                    type: 'circle',
+                    source: 'villas',
+                    paint: {
+                        'circle-color': '#11b4da',
+                        'circle-radius': 6,
+                        'circle-stroke-width': 1,
+                        'circle-stroke-color': '#fff'
+                    }
+                });
+    
+                // Create a layer for clustered points
+                map.addLayer({
+                    id: clusterLayerId,
+                    type: 'circle',
+                    source: 'villas',
+                    filter: ['has', 'point_count'],
+                    paint: {
+                        'circle-color': '#51bbd6',
+                        'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
+                    },
+                });
+    
+                // Create a layer for cluster counts
+                map.addLayer({
+                    id: clusterCountLayerId,
+                    type: 'symbol',
+                    source: 'villas',
+                    filter: ['has', 'point_count'],
+                    layout: {
+                        'text-field': '{point_count_abbreviated}',
+                        'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
+                        'text-size': 12,
+                    },
+                });
+            }
+        }
+    
+        function getGeoJSONFeatures(villaData) {
+            return {
+                type: 'FeatureCollection',
+                features: villaData.map(function (villa) {
+                    return {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: villa.location,
+                        },
+                        properties: {
+                            name: villa.name,
+                        },
+                    };
+                }),
+            };
+        }
     </script>
+    
     {{-- price range script --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -426,8 +536,6 @@
             });
 
             priceSlider.noUiSlider.on('update', function(values, handle) {
-                console.log('Slider updated:', values);
-
                 priceDisplay.innerText = '$' + values[0] + ' - $' + values[1];
             });
         });

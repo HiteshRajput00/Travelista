@@ -17,7 +17,7 @@ class SearchController extends Controller
         $query = $req->input('query');
         $results = VillaLocation::where('city', 'like', "%$query%")
             ->orwhere('state', 'like', "%$query%")
-            ->orwhere('state', 'like', "%$query%")
+            ->orwhere('country', 'like', "%$query%")
             ->get();
 
         return response()->json($results);
